@@ -106,6 +106,21 @@
                 }
             }
         },
+        "/review-dopamines": {
+            "get": {
+                "tags": [
+                    "review-dopamines"
+                ],
+                "summary": "Get all review dopamines",
+                "description": "Получение всех review dopamines",
+                "operationId": "1307b7e3d2f5db64dff58034e49811a8",
+                "responses": {
+                    "200": {
+                        "description": "review dopamines retrived successfully"
+                    }
+                }
+            }
+        },
         "/exercise/vocabulary": {
             "get": {
                 "tags": [
@@ -311,6 +326,10 @@
         {
             "name": "lessons",
             "description": "lessons"
+        },
+        {
+            "name": "review-dopamines",
+            "description": "review-dopamines"
         },
         {
             "name": "1.vocabulary (1.Лексика)",

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ExerciseTypeController;
 use App\Http\Controllers\Api\InformationController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\LessonController;
+use App\Http\Controllers\Api\ReviewDopamineController;
 use App\Http\Controllers\api\TasksController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,8 @@ Route::get('/languages',[LanguageController::class,'index']);
     Route::get('/chapters',[ChapterController::class,'index']);
     Route::get('/lessons',[LessonController::class,'index']); 
     Route::get('/exercises',[ExerciseController::class,'index']);
-    Route::get('/exercise-types',[ExerciseTypeController::class,'index']);
+    Route::get('/review-dopamines',[ReviewDopamineController::class,'index']);
+    // Route::get('/exercise-types',[ExerciseTypeController::class,'index']);
     Route::group(['prefix' => 'exercise/'],function(){
         Route::get('vocabulary',[TasksController::class,'vocabulary']);//1
         Route::get('translationA',[TasksController::class,'translationTest1']);//2

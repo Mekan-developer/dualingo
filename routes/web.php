@@ -65,16 +65,12 @@ Route::middleware(['auth:web','checkIsAdmin'])->group(function () {
         Route::get('/edit/{exercise}',[ExerciseController::class,'edit'])->name('.edit');
         Route::patch('/update/{exercise}',[ExerciseController::class,'update'])->name('.update');
 
-    });
+        Route::get('/editReview/{reviewDephomine}',[ExerciseController::class,'editReviewDopamine'])->name('.editReviewDopamine');
+        Route::patch('/reviewUpdate/{reviewDephomine}',[ExerciseController::class,'reviewDopamineUpdate'])->name('.ReviewUpdate');
 
-    // Route::group(['prefix' => 'list-exercises', 'as' => 'list.'], function(){
-    //     Route::get('/',[ListExerciseController::class,'index'])->name('exercises');
-    //     Route::get('/create',[ListExerciseController::class,'create'])->name('exercises.create');
-    //     Route::post('/store',[ListExerciseController::class,'store'])->name('exercises.store');
-    //     Route::get('/edit/{list_exercise}',[ListExerciseController::class,'edit'])->name('exercises.edit');
-    //     Route::patch('/update/{list_exercise}',[ListExerciseController::class,'update'])->name('exercises.update');
-    //     Route::delete('/delete/{list_exercise}',[ListExerciseController::class,'destroy'])->name('exercises.delete');
-    // });
+
+
+    });
 
     Route::group(['prefix' => 'informations', 'as' => 'information.'], function(){
         Route::get('/',[InformationController::class,'index'])->name('index');

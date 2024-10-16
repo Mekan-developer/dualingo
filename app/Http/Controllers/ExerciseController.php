@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExerciseRequest;
+use App\Http\Requests\ReviewDopamineRequest;
 use App\Models\Exercise;
+use App\Models\ReviewDephomine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,7 +27,8 @@ class ExerciseController extends Controller
           
         ];
         $exercises = Exercise::orderBy('order')->get();
-        return view('pages.exercises.index',['exercises' => $exercises, 'gotoLinks' => $gotoLinks]);
+        $reviewDephomine = ReviewDephomine::first();
+        return view('pages.exercises.index',['exercises' => $exercises,'reviewDephomine' => $reviewDephomine, 'gotoLinks' => $gotoLinks]);
     }
 
     public function edit(Exercise $exercise){
@@ -33,6 +36,16 @@ class ExerciseController extends Controller
 
         return view('pages.exercises.edit', compact('exercise','exercises'));
     }
+
+    public function editReviewDopamine(ReviewDephomine $reviewDephomine){
+
+
+        // $reviewDephomine = Exercise::orderBy("order")->get();
+
+        return view('pages.exercises.reviewDopamine', compact('reviewDephomine'));
+    }
+
+    
 
     public function update(ExerciseRequest $request,Exercise $exercise){
         $exercises = Exercise::all();
@@ -62,6 +75,39 @@ class ExerciseController extends Controller
 
 
         $exercise->update($data);
+
+        return redirect()->route('exercises')->with('success','exercise updated successfully!');
+    }
+
+
+    public function reviewDopamineUpdate(ReviewDopamineRequest $request,ReviewDephomine $reviewDephomine){
+        $data = $request->all();
+        foreach (range(1, 3) as $i) {
+            $field = 'dopamine' . $i;
+        
+            if ($request->hasFile($field)) {
+                if ($reviewDephomine->$field) {
+                    $this->removeFile($reviewDephomine->$field, 'exercises/dephomine');
+                }
+                
+                $random = hexdec(uniqid());
+                $imageName = $random . '.' . 'json';
+                Storage::disk('json')->putFileAs('', $request->$field, $imageName);
+                $data[$field] = $imageName;
+            }
+        }
+        
+        if ($request->hasFile('audio')) {
+            if ($reviewDephomine->audio) 
+                $this->removeFile($reviewDephomine->audio, 'exercises/audio');
+            $random = hexdec(uniqid());
+            $filename = $random . '.' . $request->audio->extension();
+            Storage::disk('exercises_audio')->putFileAs('', $request->audio,$filename);
+            $data['audio'] = $filename;
+        }
+
+
+        $reviewDephomine->update($data);
 
         return redirect()->route('exercises')->with('success','exercise updated successfully!');
     }

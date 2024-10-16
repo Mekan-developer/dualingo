@@ -53,31 +53,46 @@ class PronunciationController extends Controller
      }
 
      public function update(PronunciationRequest $request, Pronunciation $pronunciation){ 
-
+        $pronunciationAudio = $pronunciation->audio;
         $pronunciations = Pronunciation::all();
+
         $this->sortItems($pronunciations, $pronunciation->order, $request->order);
 
         $data = $request->all();
+        if ($request->hasFile('audio') && $request->audio != null) {             
+            foreach($request->audio as $requestKey => $audio){
+                if ($pronunciation->audio) {
+                    foreach($pronunciation->audio as $key => $value){
+                        if($requestKey == $key){
+                            $this->removeFile($value, 'pronunciation');
+                            unset($pronunciationAudio[$key]);
 
-        if ($request->hasFile('audio') && $request->audio != null) {
-            if ($pronunciation->audio) {
-                foreach($pronunciation->audio as $key => $value){
-                    $this->removeFile($value, 'pronunciation');
-                }  
-            }      
-            $counter = 0;
-            
-            foreach($request->audio as $audio){
-               
-                $counter++;
+                            $random = hexdec(uniqid());
+                            $filename = $random . '.' . $audio->extension();
+                            Storage::disk('pronunciation')->putFileAs('', $audio,$filename);
+                            $pronunciationAudio[$key] = $filename;
+                            goto end;
+                        }    
+                    }  
+                } 
                 $random = hexdec(uniqid());
                 $filename = $random . '.' . $audio->extension();
                 Storage::disk('pronunciation')->putFileAs('', $audio,$filename);
-                $audioFiles[$counter] = $filename;
-
+                $pronunciationAudio[$requestKey] = $filename;
+                end:
             }  
-            $data['audio'] = $audioFiles;               
+                          
+        }else{
+            $removingAudioIds = json_decode($request->removeIds);
+            if(!empty($removingAudioIds)){
+                foreach($removingAudioIds as $key){
+                    $this->removeFile($pronunciationAudio[$key], 'pronunciation');
+                    unset($pronunciationAudio[$key]); //$audio = [1 => 'sadsad.mp3' 2 => 'asdsadsa.mp3', 3 => 'sadsad.mp3', 4 => 'asdsadsa.mp3']
+                }
+                $pronunciationAudio = array_combine(range(1, count($pronunciationAudio)), array_values($pronunciationAudio));
+            }
         }
+        $data['audio'] = $pronunciationAudio; 
 
         $pronunciation->update($data);
         return redirect()->route('pronunciation.index')->with('success','Pronunciation updated sccessfully!'); 
