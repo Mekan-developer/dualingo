@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --bg-color-active: #57BE99;
+  --text-color-active: #4a5568;
+  --bg-color-non-active: #F0F0F0;
+  --text-color-non-active: #929292;
+  /* --primary-color: #3490dc;
+  --secondary-color: #ffed4a; */
+}
+
+*{
+  font-family: "Libre+Baskerville", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+html, body{
+    width:100%;
+    height:100%;
+}
+
+#jsonDisplay {
+  width: 100%;
+  height: auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.mceCostamizeColor { 
+  background: #e60000; 
+  color:#000;
+}
+
+/* scrolling design for overflows start */
+
+.scroll-container::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+  }
+  
+  .scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track background */
+  }
+  
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Thumb color */
+    border-radius: 10px; /* Rounded corners */
+    border: 3px solid #f1f1f1; /* Border around thumb */
+  }
+  
+  /* Scrollbar for Firefox */
+  .scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: #57be98ad #f1f1f1;
+  }
+  
+  /* Scrollbar for Edge, IE */
+  .scroll-container {
+    -ms-overflow-style: none; /* Hide scrollbar on IE */
+  }
+  
+  /* scrolling design for overflows end */
+
+
+  .no-select {
+    user-select: none; /* For modern browsers */
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none; /* For Firefox */
+}
