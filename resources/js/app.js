@@ -6,10 +6,6 @@ window.Alpine = Alpine;
 Alpine.start();
 
 
-
-
-
-
 // CONFIRM DELETE
 function disableButton() {
     document.getElementById('submitBtn').disabled = true;
